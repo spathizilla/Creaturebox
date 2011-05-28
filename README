@@ -1,24 +1,37 @@
 creaturebox
 Make creature spawners tradable
-Version 0.1
+Version 0.7.3
 
 creaturebox fixes several issues with creature spawners, so that they can be altered, and traded between players.
 
 Features:
-  * When a creature spawner is broken, it is dropped as an item.
-  * When a creature spawner is placed, it retains its original creature type.
-  * The creature type which is created by a creature spawner can be changed using the /creaturebox command. To alter a mob spawner, right click on it, then type /creaturebox {creaturename}, where {creaturename} is the name of a creature. Valid creature names are: Pig, Chicken, Cow, Sheep, Squid, Creeper, Ghast, Pig_zombie, Skeleton, Spider, Zombie and Slime.
-  * Supports the Permissions API. If Permissions (or GroupUsers) is not available, uses the player's Op status to determine its behavior.
+* When a creature spawner is broken, it is dropped as an item.
+* When a creature spawner is placed, it retains its original creature type.
+* The creature type which is created by a creature spawner can be changed using the /creaturebox set command. To alter a mob spawner, look directly at it (through glass is fine), then type /creaturebox set {creaturename}, where {creaturename} is the name of a creature. Valid creature names are: pig, chicken, cow, sheep, squid, creeper, ghast, pig_zombie, skeleton, spider, zombie, slime, monster, giant and wolf.
+* The frequency at which a creature spawner generates creatures can be changed using the /creaturebox period {period} command, where {period} is the number of seconds between spawns. A period of -1 gives a random period between 10 and 20 seconds. A period of zero puts the creature spawner into "pulsed redstone" mode, where creatures are generated only when the redstone power of the spawner switches from high to low.
+* The number of creatures generated at a time can be changed using the /creaturebox count {count} command, where {count} is the number of creatures to generate. A count of -1 generates a random number of creatures (from 1 to 4), while a count of 0 disables the spawner.
+* The maximum number of live mobs that a spawner will maintain can be changed using the /creaturebox limit {limit} command, where {limit} is the desired maximum. A limit of -1 sets the default, which is 10 for a managed spawner, and unknown for a natural spawner.
+* The requirements for spawning a creature can be adjusted using the /creaturebox requires {requirements} command, where {requirements} is a space separated list any number of:
+        player - require a player to be within 20 blocks of the spawner.
+        surface - require grass for critters.
+        light - require light for critters, dark for monsters.
+* A creature spawner's settings can be displayed using the /creaturebox info command.
+* A creature spawner can be given to a player using the /creaturebox give {player} {creaturename} {count} command.
+* Supports the Permissions API. If Permissions (or GroupManager/FakePermissions) is not available, uses the player's Op status to determine its behavior.
+* A creature spawner can be turned off by powering it with redstone. Note: this will not affect the spawning of invincible "Ghost pigs".
+
 
 Permissions:
-  * creaturebox.changespawner - Allows use of the /creaturebox command.
-  * creaturebox.dropspawner - When a creature spawner is broken, it is dropped as an item.
-  * creaturebox.placespawner - When a creature spawner is placed, it retains its original creature type.
+* creaturebox.set - Allows use of the /creaturebox set command.
+* creaturebox.give - Allows use of the /creaturebox give command.
+* creaturebox.creature.{creaturename} - Allows the player to set or give {creaturename} spawners, where {creaturename} is a valid creature name (pig, cow, etc...).
+* creaturebox.period - Allows use of the /creaturebox period command.
+* creaturebox.count - Allows use of the /creaturebox count command.
+* creaturebox.limit - Allows use of the /creaturebox limit command.
+* creaturebox.requires - Allows use of the /creaturebox requires command.
+* creaturebox.dropspawner - When a creature spawner is broken, it is dropped as an item.
+* creaturebox.placespawner - When a creature spawner is placed, it retains its original creature type.
+
 
 Credits:
   * Lead Developer: Lodran
-  
-Revision History:
-
-Version 0.1
-  * First Release
