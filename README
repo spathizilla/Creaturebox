@@ -1,0 +1,24 @@
+creaturebox
+Make creature spawners tradable
+Version 0.1
+
+creaturebox fixes several issues with creature spawners, so that they can be altered, and traded between players.
+
+Features:
+  * When a creature spawner is broken, it is dropped as an item.
+  * When a creature spawner is placed, it retains its original creature type.
+  * The creature type which is created by a creature spawner can be changed using the /creaturebox command. To alter a mob spawner, right click on it, then type /creaturebox {creaturename}, where {creaturename} is the name of a creature. Valid creature names are: Pig, Chicken, Cow, Sheep, Squid, Creeper, Ghast, Pig_zombie, Skeleton, Spider, Zombie and Slime.
+  * Supports the Permissions API. If Permissions (or GroupUsers) is not available, uses the player's Op status to determine its behavior.
+
+Permissions:
+  * creaturebox.changespawner - Allows use of the /creaturebox command.
+  * creaturebox.dropspawner - When a creature spawner is broken, it is dropped as an item.
+  * creaturebox.placespawner - When a creature spawner is placed, it retains its original creature type.
+
+Credits:
+  * Lead Developer: Lodran
+  
+Revision History:
+
+Version 0.1
+  * First Release
