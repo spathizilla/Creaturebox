@@ -1,0 +1,9 @@
+name: creaturebox
+main: lodran.creaturebox.CreatureboxPlugin
+version: 0.7.3
+
+commands:
+  creaturebox:
+    description: Changes the mob that a mob spawner generates.
+  cb:
+    description: Alias for creaturebox.
