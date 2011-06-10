@@ -641,7 +641,7 @@ public class CreatureboxPlugin extends DebuggerPlugin implements Runnable
     usage(inSender, "  creaturebox.set: " + creaturebox_set);
     usage(inSender, "  creaturebox.give: " + creaturebox_give);
     usage(inSender, "  creaturebox.dropspawner: " + creaturebox_dropspawner);
-    usage(inSender, "  creaturebox.placespawner: " + creaturebox_placespawner);      
+    usage(inSender, "  creaturebox.placespawner: " + creaturebox_placespawner);    
 
     return true;
   }
