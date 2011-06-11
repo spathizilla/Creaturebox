@@ -88,7 +88,11 @@ class CB_Permissions
       {
         if (inSender instanceof Player)
         {
-          theGroup = _permissions.getGroup(((Player)inSender).getName());
+          String[] allGroups = _permissions.getGroups(((Player)inSender).getWorld().getName(), ((Player)inSender).getName());
+          for(String grpname : allGroups)
+          {
+            theGroup += grpname + ", ";
+          }
         }
       }
     }
