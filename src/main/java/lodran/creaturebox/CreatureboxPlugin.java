@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.lang.reflect.Field;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -29,6 +30,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.yaml.snakeyaml.Yaml;
+import net.minecraft.server.*;
 
 public class CreatureboxPlugin extends DebuggerPlugin implements Runnable
 {  
@@ -67,13 +69,15 @@ public class CreatureboxPlugin extends DebuggerPlugin implements Runnable
     _playerListener.onEnable();
     _entityListener.onEnable();
     
+   
     this.getServer().getScheduler().scheduleSyncRepeatingTask(this,
                                                               this,
                                                               20,
                                                               20);
     
     this.makeSpawnersFile();
-        
+    this.blockStacking();
+    
     PluginDescriptionFile theDescription = this.getDescription();
     DebuggerPlugin.pluginName = theDescription.getName() + " " + theDescription.getVersion();
     
@@ -1019,6 +1023,36 @@ public class CreatureboxPlugin extends DebuggerPlugin implements Runnable
       }
     }
   }
+  
+  /******************************************************************************/
+  
+  private void blockStacking()
+  {
+	    // Preventing spawners from stacking with different types
+	    // Credit to Nisovin for how this is done. 
+	    try {
+	            boolean ok = false;
+	            try {
+	                    Field field1 = net.minecraft.server.Item.class.getDeclaredField("bj");
+	                    if (field1.getType() == boolean.class) {
+	                            field1.setAccessible(true);
+	                            field1.setBoolean(net.minecraft.server.Item.byId[52], true);
+	                            ok = true;
+	                    } 
+	            } catch (Exception e) {
+	            }
+	            if (!ok) {
+	                    // otherwise limit stack size to 1
+	                    Field field2 = net.minecraft.server.Item.class.getDeclaredField("maxStackSize");
+	                    field2.setAccessible(true);
+	                    field2.setInt(net.minecraft.server.Item.byId[52], 1);
+	            }
+	    } catch (Exception e) {
+	            e.printStackTrace();
+	    }
+  }
+  
+  
   
   /******************************************************************************/
 

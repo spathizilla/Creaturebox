@@ -1,6 +1,6 @@
 name: creaturebox
 main: lodran.creaturebox.CreatureboxPlugin
-version: 0.7.4
+version: 0.7.5
 
 commands:
   creaturebox:
