@@ -49,9 +49,9 @@ public class CB_BlockListener extends BlockListener
     PluginManager theManager = _plugin.getServer().getPluginManager();
     
     // theManager.registerEvent(Event.Type.BLOCK_RIGHTCLICKED, this, Event.Priority.Normal, _plugin);
-    theManager.registerEvent(Event.Type.BLOCK_BREAK, this, Event.Priority.Normal, _plugin);
-    theManager.registerEvent(Event.Type.BLOCK_PLACE, this, Event.Priority.Normal, _plugin);
-    theManager.registerEvent(Event.Type.BLOCK_PHYSICS, this, Event.Priority.Normal, _plugin);
+    theManager.registerEvent(Event.Type.BLOCK_BREAK, this, Event.Priority.Monitor, _plugin);
+    theManager.registerEvent(Event.Type.BLOCK_PLACE, this, Event.Priority.Monitor, _plugin);
+    theManager.registerEvent(Event.Type.BLOCK_PHYSICS, this, Event.Priority.Monitor, _plugin);
     // theManager.registerEvent(Event.Type.SIGN_CHANGE, this, Event.Priority.Normal, _plugin);
     // theManager.registerEvent(Event.Type.REDSTONE_CHANGE, this, Event.Priority.Normal, _plugin);
   }
