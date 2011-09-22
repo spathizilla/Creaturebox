@@ -201,6 +201,9 @@ abstract class CB_Spawnable
     new CB_BukkitSpawnable(CreatureType.MONSTER, 12, false);  // Monsters never seem to spawn naturally
     new CB_BukkitSpawnable(CreatureType.GIANT, 13, false);    // Giants never seem to spawn naturally
     new CB_BukkitSpawnable(CreatureType.WOLF, 14, true);
+    new CB_BukkitSpawnable(CreatureType.CAVE_SPIDER, 15, true);
+    new CB_BukkitSpawnable(CreatureType.ENDERMAN, 16, true);
+    new CB_BukkitSpawnable(CreatureType.SILVERFISH, 17, true);
   }
   
   static
