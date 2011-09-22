@@ -68,7 +68,7 @@ public class CreatureboxPlugin extends DebuggerPlugin implements Runnable
     _blockListener.onEnable();
     _playerListener.onEnable();
     _entityListener.onEnable();
-    
+    _permissions.loadPermissionsPlugin();
    
     this.getServer().getScheduler().scheduleSyncRepeatingTask(this,
                                                               this,
@@ -632,8 +632,6 @@ public class CreatureboxPlugin extends DebuggerPlugin implements Runnable
       return false;
     }
     
-    String thePlayerType = this._permissions.getGroup(inSender);
-    
     boolean creaturebox_set = this.permission(inSender, "creaturebox.set", false);
     boolean creaturebox_give = this.permission(inSender, "creaturebox.give", false);
     boolean creaturebox_dropspawner = this.permission(inSender, "creaturebox.dropspawner", false);
@@ -641,7 +639,7 @@ public class CreatureboxPlugin extends DebuggerPlugin implements Runnable
     
     PluginDescriptionFile theDescription = this.getDescription();
     
-    usage(inSender, "creaturebox " + theDescription.getVersion() + " access: " + thePlayerType);
+    usage(inSender, "creaturebox " + theDescription.getVersion());
     usage(inSender, "  creaturebox.set: " + creaturebox_set);
     usage(inSender, "  creaturebox.give: " + creaturebox_give);
     usage(inSender, "  creaturebox.dropspawner: " + creaturebox_dropspawner);

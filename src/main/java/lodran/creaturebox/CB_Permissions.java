@@ -2,8 +2,11 @@ package lodran.creaturebox;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import com.nijiko.permissions.PermissionHandler;
+
+import ru.tehkode.permissions.bukkit.*;
 import com.nijikokun.bukkit.Permissions.Permissions;
+import org.anjocaido.groupmanager.GroupManager;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.entity.Player;
@@ -12,6 +15,14 @@ import org.bukkit.ChatColor;
 class CB_Permissions
 {
   private boolean _operatorPermissions = true;
+  private final CreatureboxPlugin _plugin;
+  private Plugin _permissions = null;
+  private boolean _permissionsIsSafe = true;
+  private static HashMap<String, HashSet<String>> _permissionNodes = new HashMap<String, HashSet<String>>();
+  private enum PermissionsHandler {
+		PERMISSIONSEX, PERMISSIONS3, PERMISSIONS, GROUPMANAGER, BUKKIT
+  }
+  private static PermissionsHandler handler;
   
   public CB_Permissions(CreatureboxPlugin inPlugin)
   {
@@ -31,8 +42,6 @@ class CB_Permissions
   
   public boolean has(CommandSender inSender, String inPermission, boolean inReport)
   {
-    this.loadPermissionsPlugin();
-    
     String theGroup = ((inSender instanceof Player) ? 
                        (inSender.isOp() ? "Operator" : "Player") :
                        "Console");
@@ -43,11 +52,29 @@ class CB_Permissions
     {
       Player thePlayer = (Player) inSender;
       
-      if (this._permissions != null)
+      if (handler != null)
       {
         try
         {
-          thePermission = this._permissions.has(thePlayer, inPermission);
+    		switch (handler) {
+    			case PERMISSIONSEX:
+    				thePermission = ((PermissionsEx) this._permissions).getPermissionManager().has(thePlayer, inPermission);
+    				break;
+    			case PERMISSIONS3:
+    				thePermission = ((Permissions) this._permissions).getHandler().has(thePlayer, inPermission);
+    				break;
+    			case PERMISSIONS:
+    				thePermission = ((Permissions) this._permissions).getHandler().has(thePlayer, inPermission);
+    				break;
+    			case GROUPMANAGER:
+    				thePermission = ((GroupManager) this._permissions).getWorldsHolder().getWorldPermissions(thePlayer).has(thePlayer, inPermission);
+    				break;
+    			case BUKKIT:
+    				thePermission = thePlayer.hasPermission(inPermission);
+    				break;
+    			default:
+    				
+    		}
           
           if ((thePermission == false) && (inReport))
           {
@@ -70,75 +97,52 @@ class CB_Permissions
     
     return thePermission;
   }
-  
-  public String getGroup(CommandSender inSender)
+
+  public void loadPermissionsPlugin()
   {
-    this.loadPermissionsPlugin();
-    
-    String theGroup = ((inSender instanceof Player) ? 
-                       (inSender.isOp() ? "Operator" : "Player") :
-                       "Console");
-    
-    if ((_operatorPermissions == false) && (inSender instanceof Player))
-      theGroup = "Operator";
-    
-    try
-    {
-      if (this._permissions != null)
-      {
-        if (inSender instanceof Player)
-        {
-          String[] allGroups = _permissions.getGroups(((Player)inSender).getWorld().getName(), ((Player)inSender).getName());
-          for(String grpname : allGroups)
-          {
-            theGroup += grpname + ", ";
-          }
-        }
-      }
-    }
-    catch (Exception inException)
-    {
-      this.pluginIsUnsafe(inSender);
-    }
-    
-    return theGroup;
+	  Plugin permissionsEx = this._plugin.getServer().getPluginManager().getPlugin("PermissionsEx");
+	  Plugin groupManager = this._plugin.getServer().getPluginManager().getPlugin("GroupManager");
+	  Plugin permissions = this._plugin.getServer().getPluginManager().getPlugin("Permissions");
+
+	  if (permissionsEx != null) {
+		  this._permissions = permissionsEx;
+		  handler = PermissionsHandler.PERMISSIONSEX;
+		  String version = permissionsEx.getDescription().getVersion();
+		  System.out.println("creaturebox: Permissions enabled using: PermissionsEx v" + version);
+	  } else if (groupManager != null) {
+		  this._permissions = groupManager;
+		  handler = PermissionsHandler.GROUPMANAGER;
+		  String version = groupManager.getDescription().getVersion();
+		  System.out.println("creaturebox: Permissions enabled using: GroupManager v" + version);
+	  } else if (permissions != null) {
+		  this._permissions = permissions;
+		  String version = permissions.getDescription().getVersion();
+		  if(version.contains("3.")) {
+			  // This shouldn't make any difference according to the Permissions API
+			  handler = PermissionsHandler.PERMISSIONS3;
+		  } else {
+			  handler = PermissionsHandler.PERMISSIONS;
+		  }
+		  System.out.println("creaturebox: Permissions enabled using: Permissions v" + version);
+	  } else {
+		  handler = PermissionsHandler.BUKKIT;
+		  System.out.println("creaturebox: Permissions enabled using: Bukkit Permissions");
+		  this._permissions = null;
+	  }
   }
-  
-  private void loadPermissionsPlugin()
-  {
-    if (this._permissionsIsSafe)
-    {
-      if (this._permissions == null)
-      {
-        Plugin thePermissionsPlugin = this._plugin.getServer().getPluginManager().getPlugin("Permissions");
-        if (thePermissionsPlugin != null)
-        {
-          if (this._plugin.getServer().getPluginManager().isPluginEnabled(thePermissionsPlugin))
-          {
-            this._permissions = ((Permissions) thePermissionsPlugin).getHandler();
-            System.out.println( "creaturebox: using permissions plugin." );
-          }
-        }
-      }
-    }
-  }
+
   
   private void pluginIsUnsafe(CommandSender inSender)
   {
-    this._permissionsIsSafe = false;
-    this._permissions = null;
+    //this._permissionsIsSafe = false;
+    //this._permissions = null;
     
     System.out.println("creaturebox: permissions plugin threw an exception, and is not working properly.");
-    System.out.println("creaturebox: reverting to using isOp for access settings.");
+    //System.out.println("creaturebox: reverting to using isOp for access settings.");
     
     CreatureboxPlugin.message(inSender, CreatureboxPlugin.messageError, "permissions plugin threw an exception, and is not working properly.");
     DebuggerPlugin.notify(DebuggerPlugin.priorityError, "permissions plugin threw an exception, and is not working properly.");
   }
-  
-  private final CreatureboxPlugin _plugin;
-  private PermissionHandler _permissions = null;
-  private boolean _permissionsIsSafe = true;
-  private static HashMap<String, HashSet<String>> _permissionNodes = new HashMap<String, HashSet<String>>();
   
   private static HashMap<String, HashSet<String>> defaultPermissions()
   {
