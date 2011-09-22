@@ -159,7 +159,10 @@ class CB_Permissions
       "creaturebox.creature.zombie",
       "creaturebox.creature.slime",
       "creaturebox.creature.giant",
-      "creaturebox.creature.wolf"
+      "creaturebox.creature.wolf",
+      "creaturebox.creature.cave_spider",
+      "creaturebox.creature.enderman",
+      "creaturebox.creature.silverfish"
     };
     
     String[] theConsolePermissions = {
