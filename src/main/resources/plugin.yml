@@ -1,9 +1,117 @@
 name: creaturebox
 main: lodran.creaturebox.CreatureboxPlugin
-version: 0.7.6
-
+version: 0.7.7
+description: Allows mobspawners from dungeons to be mined and relocated. Non natural spawners can also be created with different requirements.
+author: Spathizilla and Lodran 
 commands:
   creaturebox:
-    description: Changes the mob that a mob spawner generates.
-  cb:
-    description: Alias for creaturebox.
+    description: Command to change various settings of a mobspawner.
+    aliases: [cb]
+permissions:
+  creaturebox.*:
+    description: Gives access to all creaturebox commands
+    children:
+      creaturebox.set: true
+      creaturebox.give: true
+      creaturebox.creature.pig: true
+      creaturebox.creature.chicken: true
+      creaturebox.creature.cow: true
+      creaturebox.creature.sheep: true
+      creaturebox.creature.squid: true
+      creaturebox.creature.creeper: true
+      creaturebox.creature.ghast: true
+      creaturebox.creature.pig_zombie: true
+      creaturebox.creature.skeleton: true
+      creaturebox.creature.spider: true
+      creaturebox.creature.zombie: true
+      creaturebox.creature.slime: true
+      creaturebox.creature.monster: true
+      creaturebox.creature.giant: true
+      creaturebox.creature.wolf: true
+      creaturebox.creature.cave_spider: true
+      creaturebox.creature.enderman: true
+      creaturebox.creature.silverfish: true
+      creaturebox.period: true
+      creaturebox.count: true
+      creaturebox.limit: true
+      creaturebox.requires: true
+      creaturebox.dropspawner: true
+      creaturebox.placespawner: true
+  creaturebox.set:
+    description: Allows the use of /creaturebox set command.
+    default: op
+  creaturebox.give:
+    description: Allows the use of /creaturebox give command.
+    default: op
+  creaturebox.creature.pig:
+    description: Allows the player to set or give pig spawners.
+    default: op 
+  creaturebox.creature.chicken:
+    description: Allows the player to set or give chicken spawners.
+    default: op
+  creaturebox.creature.cow:
+    description: Allows the player to set or give cow spawners.
+    default: op
+  creaturebox.creature.sheep:
+    description: Allows the player to set or give sheep spawners.
+    default: op
+  creaturebox.creature.squid:
+    description: Allows the player to set or give squid spawners.
+    default: op
+  creaturebox.creature.creeper:
+    description: Allows the player to set or give creeper spawners.
+    default: op
+  creaturebox.creature.ghast:
+    description: Allows the player to set or give ghast spawners.
+    default: op
+  creaturebox.creature.pig_zombie:
+    description: Allows the player to set or give pig zombie spawners.
+    default: op
+  creaturebox.creature.skeleton:
+    description: Allows the player to set or give skeleton spawners.
+    default: op
+  creaturebox.creature.spider:
+    description: Allows the player to set or give spider spawners.
+    default: op
+  creaturebox.creature.zombie:
+    description: Allows the player to set or give zombie spawners.
+    default: op
+  creaturebox.creature.slime:
+    description: Allows the player to set or give slime spawners.
+    default: op
+  creaturebox.creature.monster:
+    description: Allows the player to set or give monster spawners.
+    default: op
+  creaturebox.creature.giant:
+    description: Allows the player to set or give giant spawners.
+    default: op
+  creaturebox.creature.wolf:
+    description: Allows the player to set or give wolf spawners.
+    default: op
+  creaturebox.creature.cave_spider:
+    description: Allows the player to set or give cave spider spawners.
+    default: op
+  creaturebox.creature.enderman:
+    description: Allows the player to set or give enderman spawners.
+    default: op
+  creaturebox.creature.silverfish:
+    description: Allows the player to set or give silverfish spawners.
+    default: op
+  creaturebox.period:
+    description: Allows the player to use /creaturebox period command.
+    default: op
+  creaturebox.count:
+    description: Allows the player to use /creaturebox count command.
+    default: op
+  creaturebox.limit:
+    description: Allows the player to use /creaturebox limit command.
+    default: op
+  creaturebox.requires:
+    description: Allows the player to use /creaturebox requires command.
+    default: op
+  creaturebox.dropspawner:
+    description: When a mobspawner is broken, it is dropped as an item for the player
+    default: op
+  creaturebox.placespawner:
+    description: When a mobspawner is placed, it retains the original creature type
+    default: op
