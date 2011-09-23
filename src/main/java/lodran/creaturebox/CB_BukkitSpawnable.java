@@ -40,10 +40,19 @@ class CB_BukkitSpawnable extends CB_Spawnable
       World theWorld = inLocation.getWorld();
       
       CreatureboxPlugin.setSpawnControl(false);
+      LivingEntity theSpawn = null;
       
-      LivingEntity theSpawn = theWorld.spawnCreature(inLocation, _creatureType);
+      try {
+    	  theSpawn = theWorld.spawnCreature(inLocation, _creatureType);
+      } catch (Exception e) {
+    	  System.out.println("[creaturebox] Unable to spawn '" + _creatureType.getName() + "' at co-ords: "+ inLocation.getX() + ", " + inLocation.getY() + ", " + inLocation.getZ());
+      }
       
       CreatureboxPlugin.setSpawnControl(true);
+      
+      if(theSpawn == null) {
+    	  System.out.println("[creaturebox] Unable to spawn '" + _creatureType.getName() + "' at co-ords: "+ inLocation.getX() + ", " + inLocation.getY() + ", " + inLocation.getZ());
+      }
       
       // DebuggerPlugin.notify(DebuggerPlugin.priorityNoise, "spawned: " + theSpawn);
       // DebuggerPlugin.notify(DebuggerPlugin.priorityNoise, "world: " + theWorld);
