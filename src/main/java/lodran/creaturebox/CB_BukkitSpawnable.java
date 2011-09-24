@@ -42,16 +42,21 @@ class CB_BukkitSpawnable extends CB_Spawnable
       CreatureboxPlugin.setSpawnControl(false);
       LivingEntity theSpawn = null;
       
+      // TEMPFIX -- Monsters are broken
+      if(_creatureType == CreatureType.MONSTER) {
+        _creatureType = CreatureType.ZOMBIE;
+      }
+      
       try {
-    	  theSpawn = theWorld.spawnCreature(inLocation, _creatureType);
+        theSpawn = theWorld.spawnCreature(inLocation, _creatureType);
       } catch (Exception e) {
-    	  System.out.println("[creaturebox] Unable to spawn '" + _creatureType.getName() + "' at co-ords: "+ inLocation.getX() + ", " + inLocation.getY() + ", " + inLocation.getZ());
+    	System.out.println("[creaturebox] Unable to spawn '" + _creatureType.getName() + "' at co-ords: "+ inLocation.getX() + ", " + inLocation.getY() + ", " + inLocation.getZ());
       }
       
       CreatureboxPlugin.setSpawnControl(true);
       
       if(theSpawn == null) {
-    	  System.out.println("[creaturebox] Unable to spawn '" + _creatureType.getName() + "' at co-ords: "+ inLocation.getX() + ", " + inLocation.getY() + ", " + inLocation.getZ());
+    	System.out.println("[creaturebox] Unable to spawn '" + _creatureType.getName() + "' at co-ords: "+ inLocation.getX() + ", " + inLocation.getY() + ", " + inLocation.getZ());
       }
       
       // DebuggerPlugin.notify(DebuggerPlugin.priorityNoise, "spawned: " + theSpawn);
