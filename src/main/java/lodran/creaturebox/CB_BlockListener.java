@@ -84,11 +84,13 @@ public class CB_BlockListener extends BlockListener
   
   @Override public void onBlockBreak(BlockBreakEvent inEvent)
   {
+	if (inEvent.isCancelled())
+		return;
+	
     Player thePlayer = inEvent.getPlayer();
     Block theBlock = inEvent.getBlock();
     
-    if ((theBlock.getType() != Material.MOB_SPAWNER) ||
-        (inEvent.isCancelled()))
+    if (theBlock.getType() != Material.MOB_SPAWNER)
       return;
     
     if (_plugin.permission(thePlayer, "creaturebox.dropspawner", false) == false)
@@ -102,6 +104,10 @@ public class CB_BlockListener extends BlockListener
     
     MaterialData theMaterial = new MaterialData(Material.MOB_SPAWNER, (byte) theCreatureIndex);
     ItemStack theItem = new ItemStack(Material.MOB_SPAWNER, 1, (short) theCreatureIndex);
+    
+    // Fix for mcMMO's weird berserk drop mechanics
+    theLocation.getBlock().setType(Material.AIR);
+    // End
     
     theWorld.dropItemNaturally(theLocation, theItem);
     
