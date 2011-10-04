@@ -186,24 +186,24 @@ abstract class CB_Spawnable
   
   static void initialize()
   {
-    new CB_BukkitSpawnable(CreatureType.PIG, 0, true);
-    new CB_BukkitSpawnable(CreatureType.CHICKEN, 1, true);
-    new CB_BukkitSpawnable(CreatureType.COW, 2, true);
-    new CB_BukkitSpawnable(CreatureType.SHEEP, 3, true);
-    new CB_BukkitSpawnable(CreatureType.SQUID, 4, false);   // Natural spawning for squid is retarded.
-    new CB_BukkitSpawnable(CreatureType.CREEPER, 5, true);
-    new CB_BukkitSpawnable(CreatureType.GHAST, 6, true);
-    new CB_BukkitSpawnable(CreatureType.PIG_ZOMBIE, 7, true);
-    new CB_BukkitSpawnable(CreatureType.SKELETON, 8, true);
-    new CB_BukkitSpawnable(CreatureType.SPIDER, 9, true);
-    new CB_BukkitSpawnable(CreatureType.ZOMBIE, 10, true);
-    new CB_BukkitSpawnable(CreatureType.SLIME, 11, false);    // Slimes never seem to spawn naturally
-    new CB_BukkitSpawnable(CreatureType.MONSTER, 12, false);  // Monsters never seem to spawn naturally
-    new CB_BukkitSpawnable(CreatureType.GIANT, 13, false);    // Giants never seem to spawn naturally
-    new CB_BukkitSpawnable(CreatureType.WOLF, 14, true);
-    new CB_BukkitSpawnable(CreatureType.CAVE_SPIDER, 15, true);
-    new CB_BukkitSpawnable(CreatureType.ENDERMAN, 16, true);
-    new CB_BukkitSpawnable(CreatureType.SILVERFISH, 17, true);
+    new CB_BukkitSpawnable(CreatureType.PIG, 90, true);
+    new CB_BukkitSpawnable(CreatureType.CHICKEN, 93, true);
+    new CB_BukkitSpawnable(CreatureType.COW, 92, true);
+    new CB_BukkitSpawnable(CreatureType.SHEEP, 91, true);
+    new CB_BukkitSpawnable(CreatureType.SQUID, 94, false);   // Natural spawning for squid is retarded.
+    new CB_BukkitSpawnable(CreatureType.CREEPER, 50, true);
+    new CB_BukkitSpawnable(CreatureType.GHAST, 56, true);
+    new CB_BukkitSpawnable(CreatureType.PIG_ZOMBIE, 57, true);
+    new CB_BukkitSpawnable(CreatureType.SKELETON, 51, true);
+    new CB_BukkitSpawnable(CreatureType.SPIDER, 52, true);
+    new CB_BukkitSpawnable(CreatureType.ZOMBIE, 54, true);
+    new CB_BukkitSpawnable(CreatureType.SLIME, 55, false);    // Slimes never seem to spawn naturally
+    new CB_BukkitSpawnable(CreatureType.MONSTER, 49, false);  // Monsters never seem to spawn naturally
+    new CB_BukkitSpawnable(CreatureType.GIANT, 53, false);    // Giants never seem to spawn naturally
+    new CB_BukkitSpawnable(CreatureType.WOLF, 95, true);
+    new CB_BukkitSpawnable(CreatureType.CAVE_SPIDER, 59, true);
+    new CB_BukkitSpawnable(CreatureType.ENDERMAN, 58, true);
+    new CB_BukkitSpawnable(CreatureType.SILVERFISH, 60, true);
   }
   
   static
