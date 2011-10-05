@@ -3,6 +3,8 @@ package lodran.creaturebox;
 import java.util.HashSet;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.Set;
+
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.CreatureType;
@@ -175,8 +177,7 @@ abstract class CB_Spawnable
   {
     ArrayList<String> theResult = new ArrayList<String>();
     
-    int theCount = _spawnableByIndex.size();
-    for (int theIndex = 0; theIndex < theCount; theIndex++)
+    for (Integer theIndex : _spawnableByIndex.keySet())
     {
       theResult.add(_spawnableByIndex.get(theIndex).getCreatureName());
     }
