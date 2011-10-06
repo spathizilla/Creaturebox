@@ -38,7 +38,8 @@ public class CreatureboxPlugin extends DebuggerPlugin implements Runnable
   public final static int messageError = 1;
   public final static int messageInfo = 2;
   public final static int messageNoise = 3;
-
+  public static boolean showPlacements = false;
+  
   private static int _messagePriority = messageNoise;
   
   private boolean _enableRedstone = true;
@@ -79,7 +80,7 @@ public class CreatureboxPlugin extends DebuggerPlugin implements Runnable
     this.blockStacking();
     
     PluginDescriptionFile theDescription = this.getDescription();
-    DebuggerPlugin.pluginName = theDescription.getName() + " " + theDescription.getVersion();
+    DebuggerPlugin.pluginName = theDescription.getName();
     
     System.out.println( theDescription.getName() + " version " + theDescription.getVersion() + " is enabled!" );
   }
@@ -168,6 +169,12 @@ public class CreatureboxPlugin extends DebuggerPlugin implements Runnable
                                 inCommandLabel,
                                 inArguments);
     
+    if (inArguments[0].equalsIgnoreCase("holding"))
+        return this.onHoldingCommand(inSender,
+                                  inCommand,
+                                  inCommandLabel,
+                                  inArguments);
+    
     /*
     if (inArguments[0].equalsIgnoreCase("spawn"))
       return this.onSpawnCommand(inSender,
@@ -233,6 +240,29 @@ public class CreatureboxPlugin extends DebuggerPlugin implements Runnable
   }
   
   /******************************************************************************/
+  public boolean onHoldingCommand(CommandSender inSender,
+          Command inCommand,
+          String inCommandLabel,
+          String[] inArguments)
+  {
+	  if (!(inSender instanceof Player)) {
+		  CreatureboxPlugin.message(inSender, messageError, "holding command requires a player.");
+		  return false;
+	  }
+	  
+      ItemStack item = ((Player) inSender).getItemInHand();
+      if (item == null || item.getType() == Material.AIR || item.getType() != Material.MOB_SPAWNER) return false;
+         
+      int idura = item.getDurability();
+      try {
+    	  String spawnerType = CB_Spawnable.getSpawnableOf(idura).getCreatureName();
+    	  CreatureboxPlugin.message(inSender, messageAlways, "You are holding a "+ spawnerType +" spawner.");
+    	  return true;
+      } catch (NullPointerException ex) {
+    	  CreatureboxPlugin.message(inSender, messageError, "Your spawner is broken. Try to place it to receive a fixed one.");
+    	  return true;
+      }
+} 
   
   public boolean onSetCommand(CommandSender inSender,
                               Command inCommand,
@@ -946,7 +976,7 @@ public class CreatureboxPlugin extends DebuggerPlugin implements Runnable
   {    
     if (inPriority <= _messagePriority)
     {
-      inSender.sendMessage(__messageColorByIndex[inPriority] + pluginName + ": " + inMessage);
+      inSender.sendMessage(__messageColorByIndex[inPriority] + "["+ pluginName + "] " + inMessage);
     }
   }
   
@@ -965,6 +995,11 @@ public class CreatureboxPlugin extends DebuggerPlugin implements Runnable
     return __random;
   }
   
+  public static void logline(String line) {
+	  System.out.println( "["+ pluginName + "] " +line  );
+  }
+  
+  
   /******************************************************************************/
   
   protected void setDefaultConfiguration()
@@ -972,6 +1007,7 @@ public class CreatureboxPlugin extends DebuggerPlugin implements Runnable
     this.getConfiguration().setProperty("messagePriority", CreatureboxPlugin._messagePriority);
     this.getConfiguration().setProperty("enableRedstone", this._enableRedstone);
     this.getConfiguration().setProperty("operatorPermissions", this._permissions.getOperatorPermissions());
+    this.getConfiguration().setProperty("showPlacements", false);
     
     super.setDefaultConfiguration();
   }
@@ -983,6 +1019,7 @@ public class CreatureboxPlugin extends DebuggerPlugin implements Runnable
     CreatureboxPlugin._messagePriority = this.getConfiguration().getInt("messagePriority", CreatureboxPlugin._messagePriority);
     this._enableRedstone = this.getConfiguration().getBoolean("enableRedstone", this._enableRedstone);
     this._permissions.setOperatorPermissions(this.getConfiguration().getBoolean("operatorPermissions", this._permissions.getOperatorPermissions()));
+    CreatureboxPlugin.showPlacements = this.getConfiguration().getBoolean("showPlacements", CreatureboxPlugin.showPlacements);
     // System.out.print("creaturebox: messagePriority = " + CreatureboxPlugin._messagePriority);
     // System.out.print("creaturebox: enableRedstone = " + this._enableRedstone);
 
@@ -996,6 +1033,7 @@ public class CreatureboxPlugin extends DebuggerPlugin implements Runnable
     this.getConfiguration().setProperty("messagePriority", CreatureboxPlugin._messagePriority);
     this.getConfiguration().setProperty("enableRedstone", this._enableRedstone);
     this.getConfiguration().setProperty("operatorPermissions", this._permissions.getOperatorPermissions());
+    this.getConfiguration().setProperty("showPlacements", CreatureboxPlugin.showPlacements);
 
     super.saveConfiguration();
   }
@@ -1080,7 +1118,7 @@ public class CreatureboxPlugin extends DebuggerPlugin implements Runnable
           }
           else
           {
-            System.out.println( "creaturebox: malformed data found in spawners.yml" );
+            System.out.println( "creaturebox: Malformed data found in spawners.yml" );
           }
        }
       }
@@ -1095,7 +1133,7 @@ public class CreatureboxPlugin extends DebuggerPlugin implements Runnable
 
   private void saveSpawners()
   {
-    DebuggerPlugin.notify(DebuggerPlugin.priorityInfo, "saving spawners");
+    DebuggerPlugin.notify(DebuggerPlugin.priorityInfo, "Saving spawners");
     
     if (_spawnersByLocation != null)
     {

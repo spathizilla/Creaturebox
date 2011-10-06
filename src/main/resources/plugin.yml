@@ -1,6 +1,6 @@
 name: creaturebox
 main: lodran.creaturebox.CreatureboxPlugin
-version: 0.7.8a
+version: 0.7.8b
 description: Allows mobspawners from dungeons to be mined and relocated. Non natural spawners can also be created with different requirements.
 author: Spathizilla and Lodran 
 commands:

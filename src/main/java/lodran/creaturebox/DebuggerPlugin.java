@@ -151,7 +151,7 @@ public class DebuggerPlugin extends JavaPlugin
   {    
     if (inPriority <= debugPriority)
     {
-      System.out.print(pluginName + ": " + inMessage);
+      System.out.print("["+pluginName + "] " + inMessage);
     }
     
     // TODO: Debug messages seem to go missing when a player logs out and back in.
