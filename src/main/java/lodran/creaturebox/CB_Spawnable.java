@@ -205,6 +205,14 @@ abstract class CB_Spawnable
     new CB_BukkitSpawnable(CreatureType.CAVE_SPIDER, 59, true);
     new CB_BukkitSpawnable(CreatureType.ENDERMAN, 58, true);
     new CB_BukkitSpawnable(CreatureType.SILVERFISH, 60, true);
+    new CB_BukkitSpawnable(CreatureType.BLAZE, 61, true);
+    new CB_BukkitSpawnable(CreatureType.ENDER_DRAGON, 63, true);
+    new CB_BukkitSpawnable(CreatureType.MAGMA_CUBE, 62, true);
+    new CB_BukkitSpawnable(CreatureType.MUSHROOM_COW, 96, true);
+    new CB_BukkitSpawnable(CreatureType.SNOWMAN, 97, true);
+    new CB_BukkitSpawnable(CreatureType.VILLAGER, 120, true);
+    
+    
   }
   
   static

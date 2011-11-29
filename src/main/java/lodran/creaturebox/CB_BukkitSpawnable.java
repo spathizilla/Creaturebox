@@ -90,6 +90,10 @@ class CB_BukkitSpawnable extends CB_Spawnable
     _requirementsByCreatureType.put(CreatureType.CHICKEN, theCritterRequirementsByKey);
     _requirementsByCreatureType.put(CreatureType.COW, theCritterRequirementsByKey);
     _requirementsByCreatureType.put(CreatureType.SHEEP, theCritterRequirementsByKey);
+    _requirementsByCreatureType.put(CreatureType.MUSHROOM_COW, theCritterRequirementsByKey);
+    _requirementsByCreatureType.put(CreatureType.VILLAGER, theCritterRequirementsByKey);
+    _requirementsByCreatureType.put(CreatureType.SNOWMAN, theCritterRequirementsByKey);
+    
     
     // Squid
     
@@ -127,6 +131,10 @@ class CB_BukkitSpawnable extends CB_Spawnable
     _requirementsByCreatureType.put(CreatureType.CAVE_SPIDER, theMonsterRequirementsByKey);
     _requirementsByCreatureType.put(CreatureType.ENDERMAN, theMonsterRequirementsByKey);
     _requirementsByCreatureType.put(CreatureType.SILVERFISH, theMonsterRequirementsByKey);
+    _requirementsByCreatureType.put(CreatureType.BLAZE, theMonsterRequirementsByKey);
+    _requirementsByCreatureType.put(CreatureType.ENDER_DRAGON, theMonsterRequirementsByKey);
+    _requirementsByCreatureType.put(CreatureType.MAGMA_CUBE, theMonsterRequirementsByKey);
+       
     
   }
 }
