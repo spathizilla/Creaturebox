@@ -153,7 +153,7 @@ public class CB_BlockListener extends BlockListener
 	CB_Spawnable theSpawnable = CB_Spawnable.getSpawnableOf(theCreatureIndex);
     
     if (theSpawnable == null)
-      theSpawnable = CB_Spawnable.getSpawnableOf("pig");
+      theSpawnable = CB_Spawnable.getSpawnableOf("zombie");
     
 	String spawnerType = theSpawnable.getCreatureName();
 	
