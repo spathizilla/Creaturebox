@@ -1069,7 +1069,7 @@ public class CreatureboxPlugin extends DebuggerPlugin implements Runnable
 	    try {
 	            boolean ok = false;
 	            try {
-	                    Field field1 = net.minecraft.server.Item.class.getDeclaredField("bs");
+	                    Field field1 = net.minecraft.server.Item.class.getDeclaredField("a");
 	                    if (field1.getType() == boolean.class) {
 	                            field1.setAccessible(true);
 	                            field1.setBoolean(net.minecraft.server.Item.byId[52], true);

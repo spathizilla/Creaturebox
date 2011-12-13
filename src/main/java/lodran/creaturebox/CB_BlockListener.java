@@ -137,7 +137,7 @@ public class CB_BlockListener extends BlockListener
     int theCreatureIndex = _plugin.getLastDurability();
         
     if(theCreatureIndex >= 1 && theCreatureIndex <= 17) {
-    	// Ignore 0 because its pigspawners and works as is.
+    	// Ignore 0 because it is a pigspawner and works as is.
         World theWorld = theBlock.getWorld();
         Location theLocation = new Location(theWorld, theBlock.getX(), theBlock.getY(), theBlock.getZ(), 0, 0);
         theLocation.getBlock().setType(Material.AIR);
@@ -152,13 +152,13 @@ public class CB_BlockListener extends BlockListener
 
 	CB_Spawnable theSpawnable = CB_Spawnable.getSpawnableOf(theCreatureIndex);
     
-    if (theSpawnable == null)
-      theSpawnable = CB_Spawnable.getSpawnableOf("zombie");
-    
-	String spawnerType = theSpawnable.getCreatureName();
+    if (theSpawnable == null) {
+      theSpawnable = CB_Spawnable.getSpawnableOf("pig");
+    }
 	
-	if(_plugin.permission(thePlayer, "creaturebox.creature." + spawnerType, false) == false) {
-		CreatureboxPlugin.message(thePlayer, CreatureboxPlugin.messageError, "You do not have permission to place " + spawnerType + " spawners");
+	String thePermission = "creaturebox.creature." + theSpawnable.getCreatureName();
+	if(_plugin.permission(thePlayer, thePermission, true) == false) {
+		CreatureboxPlugin.message(thePlayer, CreatureboxPlugin.messageError, "You do not have permission to place " + theSpawnable.getCreatureName() + " spawners");
 		inEvent.setCancelled(true);
 		return;
 	}

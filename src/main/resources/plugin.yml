@@ -1,6 +1,6 @@
 name: creaturebox
 main: lodran.creaturebox.CreatureboxPlugin
-version: 0.7.9
+version: dev-0.7.9-2
 description: Allows mobspawners from dungeons to be mined and relocated. Non natural spawners can also be created with different requirements.
 author: Spathizilla and Lodran 
 commands:
@@ -31,12 +31,43 @@ permissions:
       creaturebox.creature.cave_spider: true
       creaturebox.creature.enderman: true
       creaturebox.creature.silverfish: true
+      creaturebox.creature.ender_dragon: true
+      creaturebox.creature.magma_cube: true
+      creaturebox.creature.mushroom_cow: true
+      creaturebox.creature.snowman: true
+      creaturebox.creature.villager: true
       creaturebox.period: true
       creaturebox.count: true
       creaturebox.limit: true
       creaturebox.requires: true
       creaturebox.dropspawner: true
       creaturebox.placespawner: true
+  creaturebox.creature.*:
+    description: Allow all creatures
+    children:
+      creaturebox.creature.pig: true
+      creaturebox.creature.chicken: true
+      creaturebox.creature.cow: true
+      creaturebox.creature.sheep: true
+      creaturebox.creature.squid: true
+      creaturebox.creature.creeper: true
+      creaturebox.creature.ghast: true
+      creaturebox.creature.pig_zombie: true
+      creaturebox.creature.skeleton: true
+      creaturebox.creature.spider: true
+      creaturebox.creature.zombie: true
+      creaturebox.creature.slime: true
+      creaturebox.creature.monster: true
+      creaturebox.creature.giant: true
+      creaturebox.creature.wolf: true
+      creaturebox.creature.cave_spider: true
+      creaturebox.creature.enderman: true
+      creaturebox.creature.silverfish: true
+      creaturebox.creature.ender_dragon: true
+      creaturebox.creature.magma_cube: true
+      creaturebox.creature.mushroom_cow: true
+      creaturebox.creature.snowman: true
+      creaturebox.creature.villager: true
   creaturebox.set:
     description: Allows the use of /creaturebox set command.
     default: op
