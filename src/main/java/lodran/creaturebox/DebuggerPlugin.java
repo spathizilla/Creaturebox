@@ -23,7 +23,6 @@ public class DebuggerPlugin extends JavaPlugin
   
   public void onEnable()
   {
-    this.makeConfigurationFile();
     
     this.loadConfiguration();
   }
@@ -32,7 +31,7 @@ public class DebuggerPlugin extends JavaPlugin
 
   public void onDisable()
   {
-    this.saveConfiguration();
+
   }
 
   /******************************************************************************/
@@ -102,47 +101,9 @@ public class DebuggerPlugin extends JavaPlugin
   
   /******************************************************************************/
 
-  protected void makeConfigurationFile()
-  {
-    this.getDataFolder().mkdirs();
-    
-    File theConfigurationFile = new File(this.getDataFolder(), "config.yml");
-    
-    if (theConfigurationFile.exists() == false)
-    {
-      try
-      {
-        theConfigurationFile.createNewFile();
-        
-        this.setDefaultConfiguration();
-                
-        this.getConfiguration().save();
-      }
-      catch (IOException theException)
-      {
-      }
-    }    
-  }
-  
-  /******************************************************************************/
-
-  protected void setDefaultConfiguration()
-  {
-    this.getConfiguration().setProperty("debugPriority", DebuggerPlugin.debugPriority);
-  }
-  
-  /******************************************************************************/
-
   protected void loadConfiguration()
   {
-    DebuggerPlugin.debugPriority = this.getConfiguration().getInt("debugPriority", DebuggerPlugin.debugPriority);
-  }
-  
-  /******************************************************************************/
-
-  protected void saveConfiguration()
-  {
-    this.getConfiguration().save();
+    DebuggerPlugin.debugPriority = CreatureboxPlugin._debugPriority;
   }
   
   /******************************************************************************/

@@ -23,6 +23,8 @@ import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -40,9 +42,15 @@ public class CreatureboxPlugin extends DebuggerPlugin implements Runnable
   public final static int messageNoise = 3;
   public static boolean showPlacements = false;
   
-  private static int _messagePriority = messageNoise;
+  private static String MCSTACKVAR = "a";
   
-  private boolean _enableRedstone = true;
+  public FileConfiguration config;
+  
+  public static int _messagePriority = messageNoise;
+  public static int _debugPriority = messageError;
+  
+  public static boolean _legacyData = false;
+  public boolean _enableRedstone = true;
   private static boolean _spawnControl = true;
 
   private final CB_Permissions _permissions = new CB_Permissions(this);
@@ -57,6 +65,7 @@ public class CreatureboxPlugin extends DebuggerPlugin implements Runnable
   // private HashMap<CB_Creature, CB_Spawner> _spawnersByCreature = new HashMap<CB_Creature, CB_Spawner>();
   
   private short _lastDurability;
+  private short _lastEnchant;
   
   private static Random __random = new Random();
   
@@ -252,8 +261,14 @@ public class CreatureboxPlugin extends DebuggerPlugin implements Runnable
 	  
       ItemStack item = ((Player) inSender).getItemInHand();
       if (item == null || item.getType() == Material.AIR || item.getType() != Material.MOB_SPAWNER) return false;
-         
-      int idura = item.getDurability();
+      
+      int idura; 
+      if(CreatureboxPlugin._legacyData) {	
+    	  idura = item.getDurability();
+      } else {
+	    Enchantment enchant = Enchantment.getByName("OXYGEN");
+	    idura = CB_Utils.getMobNetworkFromEnchant(item.getEnchantmentLevel(enchant));
+      }
       try {
     	  String spawnerType = CB_Spawnable.getSpawnableOf(idura).getCreatureName();
     	  CreatureboxPlugin.message(inSender, messageAlways, "You are holding a "+ spawnerType +" spawner.");
@@ -916,6 +931,16 @@ public class CreatureboxPlugin extends DebuggerPlugin implements Runnable
     _lastDurability = inValue;
   }
   
+  public short getLastEnchant()
+  {
+    return _lastEnchant;
+  }
+  
+  public void setLastEnchant(short inValue)
+  {
+    _lastEnchant = inValue;
+  }
+  
   public void setSpawner(Player inPlayer,
                          CB_Location inLocation,
                          CB_Spawnable inSpawnable)
@@ -1000,28 +1025,26 @@ public class CreatureboxPlugin extends DebuggerPlugin implements Runnable
   }
   
   
-  /******************************************************************************/
-  
-  protected void setDefaultConfiguration()
-  {
-    this.getConfiguration().setProperty("messagePriority", CreatureboxPlugin._messagePriority);
-    this.getConfiguration().setProperty("enableRedstone", this._enableRedstone);
-    this.getConfiguration().setProperty("operatorPermissions", this._permissions.getOperatorPermissions());
-    this.getConfiguration().setProperty("showPlacements", false);
-    
-    super.setDefaultConfiguration();
-  }
   
   /******************************************************************************/
   
   protected void loadConfiguration()
   {
-    CreatureboxPlugin._messagePriority = this.getConfiguration().getInt("messagePriority", CreatureboxPlugin._messagePriority);
-    this._enableRedstone = this.getConfiguration().getBoolean("enableRedstone", this._enableRedstone);
-    this._permissions.setOperatorPermissions(this.getConfiguration().getBoolean("operatorPermissions", this._permissions.getOperatorPermissions()));
-    CreatureboxPlugin.showPlacements = this.getConfiguration().getBoolean("showPlacements", CreatureboxPlugin.showPlacements);
-    // System.out.print("creaturebox: messagePriority = " + CreatureboxPlugin._messagePriority);
-    // System.out.print("creaturebox: enableRedstone = " + this._enableRedstone);
+	this.config = this.getConfig();
+	try {
+		this.config.options().copyDefaults(true);
+		this.saveConfig();
+		CB_Config.initialize(config);
+	} catch (Exception e) {
+		 DebuggerPlugin.notify(DebuggerPlugin.priorityError, e.toString());
+	}
+	  
+    CreatureboxPlugin._messagePriority = CB_Config.messagePriority;
+    CreatureboxPlugin._debugPriority = CB_Config.debugPriority;
+    this._enableRedstone = CB_Config.enableRedstone;
+    this._permissions.setOperatorPermissions(CB_Config.operatorPermissions);
+    CreatureboxPlugin.showPlacements = CB_Config.showPlacements;
+    this._legacyData = CB_Config.legacyData;
 
     super.loadConfiguration();
   }
@@ -1030,12 +1053,7 @@ public class CreatureboxPlugin extends DebuggerPlugin implements Runnable
 
   protected void saveConfiguration()
   {
-    this.getConfiguration().setProperty("messagePriority", CreatureboxPlugin._messagePriority);
-    this.getConfiguration().setProperty("enableRedstone", this._enableRedstone);
-    this.getConfiguration().setProperty("operatorPermissions", this._permissions.getOperatorPermissions());
-    this.getConfiguration().setProperty("showPlacements", CreatureboxPlugin.showPlacements);
-
-    super.saveConfiguration();
+	  this.saveConfig();
   }
     
   /******************************************************************************/
@@ -1069,7 +1087,7 @@ public class CreatureboxPlugin extends DebuggerPlugin implements Runnable
 	    try {
 	            boolean ok = false;
 	            try {
-	                    Field field1 = net.minecraft.server.Item.class.getDeclaredField("a");
+	                    Field field1 = net.minecraft.server.Item.class.getDeclaredField(MCSTACKVAR);
 	                    if (field1.getType() == boolean.class) {
 	                            field1.setAccessible(true);
 	                            field1.setBoolean(net.minecraft.server.Item.byId[52], true);
