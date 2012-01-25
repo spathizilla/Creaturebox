@@ -1,5 +1,6 @@
 package lodran.creaturebox;
 
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.PluginManager;
@@ -35,8 +36,16 @@ public class CB_PlayerListener extends PlayerListener
 
   public void onPlayerInteract(PlayerInteractEvent inEvent)
   {
-    ItemStack theItemStack = inEvent.getItem();
-    if ((theItemStack != null) && (theItemStack.getType() == Material.MOB_SPAWNER))
-      _plugin.setLastDurability(theItemStack.getDurability());
-  }  
+	 if(!inEvent.isCancelled()) {
+		ItemStack theItemStack = inEvent.getItem();
+		if ((theItemStack != null) && (theItemStack.getType() == Material.MOB_SPAWNER)) {
+			if(CreatureboxPlugin._legacyData) {
+				_plugin.setLastDurability(theItemStack.getDurability());
+			} else {
+				Enchantment enchant = Enchantment.getByName("OXYGEN");
+				_plugin.setLastEnchant((short)theItemStack.getEnchantmentLevel(enchant));
+			}
+	 	}
+	 }
+  }
 }

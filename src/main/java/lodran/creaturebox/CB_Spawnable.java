@@ -209,7 +209,7 @@ abstract class CB_Spawnable
     new CB_BukkitSpawnable(CreatureType.ENDER_DRAGON, 63, true);
     new CB_BukkitSpawnable(CreatureType.MAGMA_CUBE, 62, false);
     new CB_BukkitSpawnable(CreatureType.MUSHROOM_COW, 96, true);
-    new CB_BukkitSpawnable(CreatureType.SNOWMAN, 97, false);
+    new CB_BukkitSpawnable(CreatureType.SNOWMAN, 97, true);
     new CB_BukkitSpawnable(CreatureType.VILLAGER, 120, true);
     
     

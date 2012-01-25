@@ -7,6 +7,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.block.BlockFace;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.Material;
 import org.bukkit.material.MaterialData;
 import org.bukkit.event.block.BlockCanBuildEvent;
@@ -103,10 +104,21 @@ public class CB_BlockListener extends BlockListener
     CreatureSpawner theSpawner = (CreatureSpawner) theBlock.getState();
     CB_Spawnable theSpawnable = CB_Spawnable.getSpawnableOf(theSpawner.getCreatureType());
     int theCreatureIndex = theSpawnable.getCreatureIndex();
+
+	String thePermission = "creaturebox.creature." + theSpawnable.getCreatureName();
+	if(_plugin.permission(thePlayer, thePermission, true) == false) {
+		CreatureboxPlugin.message(thePlayer, CreatureboxPlugin.messageError, "You do not have permission to break " + theSpawnable.getCreatureName() + " spawners");
+		inEvent.setCancelled(true);
+		return;
+	}
     
     //MaterialData theMaterial = new MaterialData(Material.MOB_SPAWNER, (byte) theCreatureIndex);
     ItemStack theItem = new ItemStack(Material.MOB_SPAWNER, 1, (short) theCreatureIndex);
-    
+    if(!CreatureboxPlugin._legacyData) { 
+    	Enchantment enchant = Enchantment.getByName("OXYGEN");
+    	int mobeval = CB_Utils.getMobEnchantmentFromID(theCreatureIndex);
+    	theItem.addUnsafeEnchantment(enchant, mobeval);
+    }
     // Fix for mcMMO's weird berserk drop mechanics
     theLocation.getBlock().setType(Material.AIR);
     // End
@@ -134,9 +146,17 @@ public class CB_BlockListener extends BlockListener
     if (_plugin.permission(thePlayer, "creaturebox.placespawner", true) == false)
       return;
     
-    int theCreatureIndex = _plugin.getLastDurability();
-        
+    
+    int theCreatureIndex;
+    
+    if(CreatureboxPlugin._legacyData) {
+    	theCreatureIndex = _plugin.getLastDurability();
+    } else {
+    	theCreatureIndex = CB_Utils.getMobNetworkFromEnchant(_plugin.getLastEnchant());
+    }
+    
     if(theCreatureIndex >= 1 && theCreatureIndex <= 17) {
+    	// We shouldnt get here during enchantment mode.
     	// Ignore 0 because it is a pigspawner and works as is.
         World theWorld = theBlock.getWorld();
         Location theLocation = new Location(theWorld, theBlock.getX(), theBlock.getY(), theBlock.getZ(), 0, 0);
@@ -218,5 +238,4 @@ public class CB_BlockListener extends BlockListener
 	}
 	return theNCreatureIndex;
   }
-
 }
