@@ -163,6 +163,15 @@ abstract class CB_Spawnable
     return theResult;
   }
   
+  static ArrayList<CB_Spawnable> getSpawnables(String inCreatureName)
+  {
+    ArrayList<CB_Spawnable> theResult = new ArrayList<CB_Spawnable>();
+    theResult.add(_spawnableByName.get(inCreatureName.toLowerCase()));
+    
+    return theResult;
+  }
+  
+  
   static ArrayList<String> getCreatureNames(ArrayList<CB_Spawnable> inSpawnables)
   {
     ArrayList<String> theResult = new ArrayList<String>();

@@ -1,23 +1,18 @@
 package lodran.creaturebox;
 
 import org.bukkit.Location;
-import org.bukkit.event.entity.EntityListener;
-import org.bukkit.entity.Entity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.World;
 import org.bukkit.entity.CreatureType;
-// import org.bukkit.entity.Creature;
-import java.util.Iterator;
 import org.bukkit.block.Block;
 import org.bukkit.Material;
-import org.bukkit.ChatColor;
-import java.lang.Math;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.event.Event;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 
-public class CB_EntityListener extends EntityListener
+public class CB_EntityListener implements Listener
 {
   private final CreatureboxPlugin _plugin;
   
@@ -33,14 +28,16 @@ public class CB_EntityListener extends EntityListener
   public void onEnable()
   {
     PluginManager theManager = _plugin.getServer().getPluginManager();
-    
-    theManager.registerEvent(Event.Type.CREATURE_SPAWN, this, Event.Priority.Normal, _plugin);
+    theManager.registerEvents(this, this._plugin);
+
+    //theManager.registerEvent(Event.Type.CREATURE_SPAWN, this, Event.Priority.Normal, _plugin);
     // theManager.registerEvent(Event.Type.ENTITY_DEATH, this, Event.Priority.Normal, _plugin);
   }
   
   /******************************************************************************/
   
-  @Override public void onCreatureSpawn(CreatureSpawnEvent inEvent)
+  @EventHandler(priority = EventPriority.NORMAL)  
+  public void onCreatureSpawn(CreatureSpawnEvent inEvent)
   { 
     // _plugin.notifyDebuggers(ChatColor.AQUA + "creaturebox: onCreatureSpawn");
     
@@ -81,20 +78,5 @@ public class CB_EntityListener extends EntityListener
       }
     }
   }
-  
-  /*
-  @Override public void onEntityDeath(EntityDeathEvent inEvent)
-  {
-    Entity theEntity = inEvent.getEntity();
-    
-    if (theEntity instanceof Creature)
-    {
-      // System.out.println("onEntityDeath: " + theEntity.getEntityId() + " died");
-      
-      _plugin.creatureDied(theEntity.getEntityId());
-    }
-  }
-   */
-  
-  /******************************************************************************/
+ /******************************************************************************/
 }

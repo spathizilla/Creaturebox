@@ -12,7 +12,12 @@ class CB_Location extends Location
     super(inValue.getWorld(),
           inValue.getBlockX(), inValue.getBlockY(), inValue.getBlockZ());
   }
-    
+
+  public CB_Location(CreatureboxPlugin inPlugin, String world, Double x, Double y, Double z)
+  {
+    super(inPlugin.getServer().getWorld(world), x, y, z);
+  }
+  
   public CB_Location(CreatureboxPlugin inPlugin,
                      HashMap<String, Object> inSettings)
   {

@@ -25,6 +25,7 @@ class CB_Spawner
   
   private CreatureboxPlugin _plugin;
   
+  private int _spawnerID = -1;
   private CB_Location _location;
   private ArrayList<CB_Spawnable> _spawns;
   private int _period = defaultPeriod;
@@ -64,6 +65,10 @@ class CB_Spawner
     this._spawns = inSpawns;
   }
   
+  public void destroySpawner() {
+	  CB_DataSource.destroySpawner(this);
+  }
+  
   public CB_Spawner(CreatureboxPlugin inPlugin)
   {
     this._plugin = inPlugin;
@@ -87,14 +92,22 @@ class CB_Spawner
   public void setSpawns(ArrayList<CB_Spawnable> inValue)
   {
     this._spawns = inValue;
-    this._plugin.hasDirtySpawner();
+    CB_DataSource.updateSpawnerType(this);
   }
   
   public void setSpawns(CB_Spawnable inValue)
   {
     this._spawns = new ArrayList<CB_Spawnable>();
     this._spawns.add(inValue);
-    this._plugin.hasDirtySpawner();
+    CB_DataSource.updateSpawnerType(this);
+  }
+  
+  public int getSpawnerID() {
+	  return this._spawnerID;
+  }
+
+  public void setSpawnerID(int newID) {
+	  this._spawnerID = newID;
   }
   
   public int getPeriod()
@@ -105,7 +118,7 @@ class CB_Spawner
   public void setPeriod(int inValue)
   {
     this._period = inValue;
-    this._plugin.hasDirtySpawner();
+    CB_DataSource.updateSpawnerPeriod(this);
   }
   
   public int getCount()
@@ -116,7 +129,7 @@ class CB_Spawner
   public void setCount(int inValue)
   {
     this._count = inValue;
-    this._plugin.hasDirtySpawner();
+    CB_DataSource.updateSpawnerCount(this);
   }
   
   public int getLimit()
@@ -127,7 +140,7 @@ class CB_Spawner
   public void setLimit(int inValue)
   {
     this._limit = inValue;
-    this._plugin.hasDirtySpawner();
+    CB_DataSource.updateSpawnerLimit(this);
   }
   
   public ArrayList<String> getRequirements()
@@ -138,7 +151,7 @@ class CB_Spawner
   public void setRequirements(ArrayList<String> inValue)
   {
     this._requirements = inValue;
-    this._plugin.hasDirtySpawner();
+    CB_DataSource.updateSpawnerReqs(this);
   }
   
   public boolean getNatural()
@@ -157,7 +170,7 @@ class CB_Spawner
   public HashMap<String, Object> getSettings()
   {
     HashMap<String, Object> theResult = new HashMap<String, Object>();
-    
+    theResult.put("id", this._spawnerID);
     theResult.put("Location", this._location.getSettings());
     theResult.put("Spawns", CB_Spawnable.getCreatureNames(this._spawns));
     theResult.put("Period", this._period);
@@ -175,9 +188,9 @@ class CB_Spawner
   {
     try
     {
-      this._location = new CB_Location(_plugin,
-                                       (HashMap<String, Object>)inSettings.get("Location"));
-      this._spawns = CB_Spawnable.getSpawnables((ArrayList<String>) inSettings.get("Spawns"));
+      this._spawnerID = (Integer)inSettings.get("id");
+      this._location = new CB_Location((org.bukkit.Location) inSettings.get("Location"));
+      this._spawns = CB_Spawnable.getSpawnables((String) inSettings.get("Spawns"));
       this._period = (Integer)inSettings.get("Period");
       this._count = (Integer)inSettings.get("Count");
       this._limit = (Integer)inSettings.get("Limit");
@@ -188,14 +201,14 @@ class CB_Spawner
     }
     catch (NullPointerException inException)
     {
+    	System.out.println(inException);
       // I don't care what the exception was.  Return false to indicate that I couldn't parse the settings.
-      
       return false;
     }
     catch (Exception inException)
     {
+    	System.out.println(inException);
       // I don't care what the exception was.  Return false to indicate that I couldn't parse the settings.
-      
       return false;
     }
     
@@ -222,7 +235,7 @@ class CB_Spawner
         }
         theDescription += _spawns.get(theIndex).getCreatureName();
       }
-      theDescription += " spawner.";
+      theDescription += " spawner. Database id: " + this._spawnerID;
       CreatureboxPlugin.usage(inSender, theDescription);
       
       CreatureboxPlugin.usage(inSender, "  period: " + this._period);
@@ -245,6 +258,14 @@ class CB_Spawner
 
       CreatureboxPlugin.usage(inSender, theDescription);
     }
+  }
+  
+  public int getReqs(String reqname) {
+	  if(this._requirements.contains(reqname.toLowerCase())) {
+		  return 1;
+	  } else {
+		  return 0;
+	  }
   }
   
   public boolean isChunkLoaded()
@@ -322,8 +343,9 @@ class CB_Spawner
     {
       int theSpawnableIndex = CreatureboxPlugin.getRandom().nextInt(this._spawns.size());
       CB_Spawnable theSpawnable = this._spawns.get(theSpawnableIndex);
-      
+
       theResult = theSpawnable.spawnCreatureNear(this._location, _requirements);
+
     }
     
     return theResult;
