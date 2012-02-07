@@ -3,4 +3,11 @@ messagePriority: 3
 debugPriority: 1
 operatorPermissions: true
 showPlacements: true
-legacyData: false
+mysql:
+  enabled: false
+  host: 'localhost'
+  port: 3306
+  database: 'minecraft'
+  table: 'homeTable'
+  username: 'root'
+  password: 'password'
