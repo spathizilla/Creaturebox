@@ -208,7 +208,6 @@ abstract class CB_Spawnable
     new CB_BukkitSpawnable(CreatureType.SPIDER, 52, true);
     new CB_BukkitSpawnable(CreatureType.ZOMBIE, 54, true);
     new CB_BukkitSpawnable(CreatureType.SLIME, 55, false);    // Slimes never seem to spawn naturally
-    new CB_BukkitSpawnable(CreatureType.MONSTER, 49, false);  // Monsters never seem to spawn naturally
     new CB_BukkitSpawnable(CreatureType.GIANT, 53, false);    // Giants never seem to spawn naturally
     new CB_BukkitSpawnable(CreatureType.WOLF, 95, true);
     new CB_BukkitSpawnable(CreatureType.CAVE_SPIDER, 59, true);

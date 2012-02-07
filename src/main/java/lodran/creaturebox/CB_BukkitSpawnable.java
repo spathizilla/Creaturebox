@@ -125,7 +125,6 @@ class CB_BukkitSpawnable extends CB_Spawnable
     _requirementsByCreatureType.put(CreatureType.SPIDER, theMonsterRequirementsByKey);
     _requirementsByCreatureType.put(CreatureType.ZOMBIE, theMonsterRequirementsByKey);
     _requirementsByCreatureType.put(CreatureType.SLIME, theMonsterRequirementsByKey);
-    _requirementsByCreatureType.put(CreatureType.MONSTER, theMonsterRequirementsByKey);
     _requirementsByCreatureType.put(CreatureType.GIANT, theMonsterRequirementsByKey);
     _requirementsByCreatureType.put(CreatureType.WOLF, theCritterRequirementsByKey);
     _requirementsByCreatureType.put(CreatureType.CAVE_SPIDER, theMonsterRequirementsByKey);
