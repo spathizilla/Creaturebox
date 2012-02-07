@@ -40,11 +40,13 @@ class CB_Permissions
     _operatorPermissions = inValue;
   }
   
-  public boolean has(CommandSender inSender, String inPermission, boolean inReport)
+  public boolean has(CommandSender inSender, String inCPermission, boolean inReport)
   {
+	String inPermission = inCPermission.toLowerCase();
     String theGroup = ((inSender instanceof Player) ? 
                        (inSender.isOp() ? "Operator" : "Player") :
                        "Console");
+    
     
     boolean thePermission = _permissionNodes.get(theGroup).contains(inPermission);
     
