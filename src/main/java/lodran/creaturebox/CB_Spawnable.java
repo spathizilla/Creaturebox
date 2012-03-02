@@ -7,7 +7,7 @@ import java.util.Set;
 
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.CreatureType;
+import org.bukkit.entity.EntityType;
 import org.bukkit.World;
 import java.util.Random;
 import org.bukkit.block.Block;
@@ -51,7 +51,7 @@ abstract class CB_Spawnable
     return this._creatureIndex;
   }
   
-  public CreatureType getCreatureType()
+  public EntityType getEntityType()
   {
     return null;
   }
@@ -114,9 +114,9 @@ abstract class CB_Spawnable
     return CB_Spawnable._spawnableByIndex.get(inCreatureIndex);
   }
   
-  static CB_Spawnable getSpawnableOf(CreatureType inCreatureType)
+  static CB_Spawnable getSpawnableOf(EntityType inEntityType)
   {
-    return CB_Spawnable._spawnableByName.get(inCreatureType.toString().toLowerCase());
+    return CB_Spawnable._spawnableByName.get(inEntityType.toString().toLowerCase());
   }
   
   // Test to see if the specified location meets the specified requirements.
@@ -196,29 +196,31 @@ abstract class CB_Spawnable
   
   static void initialize()
   {
-    new CB_BukkitSpawnable(CreatureType.PIG, 90, true);
-    new CB_BukkitSpawnable(CreatureType.CHICKEN, 93, true);
-    new CB_BukkitSpawnable(CreatureType.COW, 92, true);
-    new CB_BukkitSpawnable(CreatureType.SHEEP, 91, true);
-    new CB_BukkitSpawnable(CreatureType.SQUID, 94, false);   // Natural spawning for squid is retarded.
-    new CB_BukkitSpawnable(CreatureType.CREEPER, 50, true);
-    new CB_BukkitSpawnable(CreatureType.GHAST, 56, true);
-    new CB_BukkitSpawnable(CreatureType.PIG_ZOMBIE, 57, true);
-    new CB_BukkitSpawnable(CreatureType.SKELETON, 51, true);
-    new CB_BukkitSpawnable(CreatureType.SPIDER, 52, true);
-    new CB_BukkitSpawnable(CreatureType.ZOMBIE, 54, true);
-    new CB_BukkitSpawnable(CreatureType.SLIME, 55, false);    // Slimes never seem to spawn naturally
-    new CB_BukkitSpawnable(CreatureType.GIANT, 53, false);    // Giants never seem to spawn naturally
-    new CB_BukkitSpawnable(CreatureType.WOLF, 95, true);
-    new CB_BukkitSpawnable(CreatureType.CAVE_SPIDER, 59, true);
-    new CB_BukkitSpawnable(CreatureType.ENDERMAN, 58, true);
-    new CB_BukkitSpawnable(CreatureType.SILVERFISH, 60, true);
-    new CB_BukkitSpawnable(CreatureType.BLAZE, 61, true);
-    new CB_BukkitSpawnable(CreatureType.ENDER_DRAGON, 63, true);
-    new CB_BukkitSpawnable(CreatureType.MAGMA_CUBE, 62, false);
-    new CB_BukkitSpawnable(CreatureType.MUSHROOM_COW, 96, true);
-    new CB_BukkitSpawnable(CreatureType.SNOWMAN, 97, true);
-    new CB_BukkitSpawnable(CreatureType.VILLAGER, 120, true);
+    new CB_BukkitSpawnable(EntityType.PIG, 90, true);
+    new CB_BukkitSpawnable(EntityType.CHICKEN, 93, true);
+    new CB_BukkitSpawnable(EntityType.COW, 92, true);
+    new CB_BukkitSpawnable(EntityType.SHEEP, 91, true);
+    new CB_BukkitSpawnable(EntityType.SQUID, 94, false);   // Natural spawning for squid is retarded.
+    new CB_BukkitSpawnable(EntityType.CREEPER, 50, true);
+    new CB_BukkitSpawnable(EntityType.GHAST, 56, true);
+    new CB_BukkitSpawnable(EntityType.PIG_ZOMBIE, 57, true);
+    new CB_BukkitSpawnable(EntityType.SKELETON, 51, true);
+    new CB_BukkitSpawnable(EntityType.SPIDER, 52, true);
+    new CB_BukkitSpawnable(EntityType.ZOMBIE, 54, true);
+    new CB_BukkitSpawnable(EntityType.SLIME, 55, false);    // Slimes never seem to spawn naturally
+    new CB_BukkitSpawnable(EntityType.GIANT, 53, false);    // Giants never seem to spawn naturally
+    new CB_BukkitSpawnable(EntityType.WOLF, 95, true);
+    new CB_BukkitSpawnable(EntityType.CAVE_SPIDER, 59, true);
+    new CB_BukkitSpawnable(EntityType.ENDERMAN, 58, true);
+    new CB_BukkitSpawnable(EntityType.SILVERFISH, 60, true);
+    new CB_BukkitSpawnable(EntityType.BLAZE, 61, true);
+    new CB_BukkitSpawnable(EntityType.ENDER_DRAGON, 63, true);
+    new CB_BukkitSpawnable(EntityType.MAGMA_CUBE, 62, false);
+    new CB_BukkitSpawnable(EntityType.MUSHROOM_COW, 96, true);
+    new CB_BukkitSpawnable(EntityType.SNOWMAN, 97, true);
+    new CB_BukkitSpawnable(EntityType.VILLAGER, 120, true);
+    new CB_BukkitSpawnable(EntityType.OCELOT, 98, true);
+    new CB_BukkitSpawnable(EntityType.IRON_GOLEM, 99, true);
     
     
   }

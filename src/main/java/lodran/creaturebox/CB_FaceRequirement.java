@@ -17,6 +17,7 @@ abstract class CB_FaceRequirement extends CB_Requirement
   
   public Block getFace(Location inLocation)
   {
-    return inLocation.getBlock().getFace(_blockFace);
+	Block above = inLocation.getBlock().getRelative(_blockFace);
+    return above;
   }
 }

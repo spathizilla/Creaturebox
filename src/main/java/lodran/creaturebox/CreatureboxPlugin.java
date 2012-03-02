@@ -15,6 +15,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -25,8 +27,7 @@ import org.bukkit.block.CreatureSpawner;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.CreatureType;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -321,7 +322,7 @@ public class CreatureboxPlugin extends DebuggerPlugin implements Runnable
 		}
 
 		CB_Spawnable theSpawnable = null;
-		CreatureType theCreatureType = null;
+		EntityType theEntityType = null;
 		ArrayList<CB_Spawnable> theSpawns = new ArrayList<CB_Spawnable>();
 
 		for (int theIndex = 1; theIndex < inArguments.length; theIndex++)
@@ -339,9 +340,9 @@ public class CreatureboxPlugin extends DebuggerPlugin implements Runnable
 
 			theSpawns.add(theSpawnable);
 
-			if (theCreatureType == null)
+			if (theEntityType == null)
 			{
-				theCreatureType = theSpawnable.getCreatureType();
+				theEntityType = theSpawnable.getEntityType();
 			}
 		}
 
@@ -741,11 +742,11 @@ public class CreatureboxPlugin extends DebuggerPlugin implements Runnable
 		}
 
 		CB_Spawnable theSpawnable = CB_Spawnable.getSpawnableOf(inArguments[1]);
-		CreatureType theCreatureType = theSpawnable.getCreatureType();
+		EntityType theEntityType = theSpawnable.getEntityType();
 		Location theLocation = thePlayer.getLocation();
 		World theWorld = theLocation.getWorld();
 
-		LivingEntity theSpawn = theWorld.spawnCreature(theLocation, theCreatureType);
+		LivingEntity theSpawn = theWorld.spawnCreature(theLocation, theEntityType);
 
 		// DebuggerPlugin.notify(DebuggerPlugin.priorityNoise, "Spawned: " + theSpawn.toString());
 
@@ -920,7 +921,7 @@ public class CreatureboxPlugin extends DebuggerPlugin implements Runnable
 			if (theBlock.getType() == Material.MOB_SPAWNER)
 			{
 				CreatureSpawner theNaturalSpawner = (CreatureSpawner) theBlock.getState();
-				theNaturalSpawner.setCreatureType(inSpawner.getCreatureType());
+				theNaturalSpawner.setSpawnedType(inSpawner.getEntityType());
 			}
 			_spawnersByLocation.remove(inSpawner.getLocation());
 		}
@@ -998,11 +999,11 @@ public class CreatureboxPlugin extends DebuggerPlugin implements Runnable
 		}
 
 		CreatureSpawner theSpawner = (CreatureSpawner) inLocation.getBlock().getState();
-		CreatureType theCreatureType = inSpawns.get(0).getCreatureType();
-		if (theCreatureType == null)
-			theCreatureType = CreatureType.PIG;
+		EntityType theEntityType = inSpawns.get(0).getEntityType();
+		if (theEntityType == null)
+			theEntityType = EntityType.PIG;
 
-		theSpawner.setCreatureType(inSpawns.get(0).getCreatureType());
+		theSpawner.setSpawnedType(inSpawns.get(0).getEntityType());
 
 		String theTypes = "spawner now creates ";
 
@@ -1087,23 +1088,23 @@ public class CreatureboxPlugin extends DebuggerPlugin implements Runnable
 	{
 		// Preventing spawners from stacking with different types
 		// Credit to Nisovin for how this is done. 
-		try {
-			boolean ok = false;
-			try {
-				Field field1 = net.minecraft.server.Item.class.getDeclaredField(MCSTACKVAR);
-				if (field1.getType() == boolean.class) {
-					field1.setAccessible(true);
-					field1.setBoolean(net.minecraft.server.Item.byId[52], true);
-					ok = true;
-				} 
-			} catch (Exception e) {
-			}
-			if (!ok) {
-				// otherwise limit stack size to 1
-				Field field2 = net.minecraft.server.Item.class.getDeclaredField("maxStackSize");
-				field2.setAccessible(true);
-				field2.setInt(net.minecraft.server.Item.byId[52], 1);
-			}
+        try {
+            boolean ok = false;
+            try {
+                    Method method = net.minecraft.server.Item.class.getDeclaredMethod(MCSTACKVAR, boolean.class);
+                    if (method.getReturnType() == net.minecraft.server.Item.class) {
+                            method.setAccessible(true);
+                            method.invoke(net.minecraft.server.Item.byId[52], true);
+                            ok = true;
+                    }
+            } catch (Exception e) {
+            }
+            if (!ok) {
+                    Field field = net.minecraft.server.Item.class.getDeclaredField("maxStackSize");
+                    field.setAccessible(true);
+                    field.setInt(net.minecraft.server.Item.byId[52], 1);
+            }
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

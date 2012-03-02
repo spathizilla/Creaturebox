@@ -102,7 +102,7 @@ public class CB_DataSource {
     		Connection conn = ConnectionManager.getConnection();
 
     		ps = conn.prepareStatement("INSERT INTO `"+ CB_Config.mySQLtable + "` (`Spawns`, `World`, `X`, `Y`, `Z`, `Limit`, `Count`, `Period`, `Space`, `Surface`, `Player`, `Light`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
-    		ps.setString(1, spawner.getCreatureType().getName());
+    		ps.setString(1, spawner.getEntityType().getName());
     		ps.setString(2, spawner.getLocation().getWorld().getName());
     		ps.setDouble(3, spawner.getLocation().getBlockX());
     		ps.setDouble(4, spawner.getLocation().getBlockY());
@@ -138,9 +138,15 @@ public class CB_DataSource {
     }
     
     public static void destroySpawner(CB_Spawner spawner) {
-    	if(spawner.getSpawnerID() == -1 || spawner.getNatural()) {
+    	
+    	if(spawner.getSpawnerID() == -1) {
     		return;
     	}
+    	
+    	if(spawner.isValid()) {
+    		return;
+    	}
+    	
     	PreparedStatement ps = null;
     	ResultSet set = null;
     	try {
@@ -176,7 +182,7 @@ public class CB_DataSource {
     	try {
     		Connection conn = ConnectionManager.getConnection();
     		ps = conn.prepareStatement("UPDATE `"+ CB_Config.mySQLtable + "` SET `Spawns` = ? WHERE id = ?");
-    		ps.setString(1, spawner.getCreatureType().getName());
+    		ps.setString(1, spawner.getEntityType().getName());
     		ps.setInt(2, spawner.getSpawnerID());
     		ps.executeUpdate();
     		conn.commit();

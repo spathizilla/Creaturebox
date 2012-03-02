@@ -1,6 +1,6 @@
 package lodran.creaturebox;
 
-import org.bukkit.entity.CreatureType;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -11,23 +11,23 @@ import org.bukkit.block.BlockFace;
 
 class CB_BukkitSpawnable extends CB_Spawnable
 {
-  private CreatureType _creatureType;
+  private EntityType _EntityType;
   
-  public CB_BukkitSpawnable(CreatureType inCreatureType,
+  public CB_BukkitSpawnable(EntityType inEntityType,
                          Integer inCreatureIndex,
                             boolean inNatural)
   {
-    super(inCreatureType.toString().toLowerCase(),
+    super(inEntityType.toString().toLowerCase(),
           inCreatureIndex,
           inNatural,
-          _requirementsByCreatureType.get(inCreatureType));
+          _requirementsByEntityType.get(inEntityType));
     
-    _creatureType = inCreatureType;
+    _EntityType = inEntityType;
   }
   
-  public CreatureType getCreatureType()
+  public EntityType getEntityType()
   {
-    return _creatureType;
+    return _EntityType;
   }  
   
   LivingEntity spawnCreatureAt(Location inLocation,
@@ -42,21 +42,16 @@ class CB_BukkitSpawnable extends CB_Spawnable
       CreatureboxPlugin.setSpawnControl(false);
       LivingEntity theSpawn = null;
       
-      // TEMPFIX -- Monsters are broken
-      if(_creatureType == CreatureType.MONSTER) {
-        _creatureType = CreatureType.ZOMBIE;
-      }
-      
       try {
-        theSpawn = theWorld.spawnCreature(inLocation, _creatureType);
+        theSpawn = theWorld.spawnCreature(inLocation, _EntityType);
       } catch (Exception e) {
-    	System.out.println("[creaturebox] Unable to spawn '" + _creatureType.getName() + "' at co-ords: "+ inLocation.getX() + ", " + inLocation.getY() + ", " + inLocation.getZ());
+    	System.out.println("[creaturebox] Unable to spawn '" + _EntityType.getName() + "' at co-ords: "+ inLocation.getX() + ", " + inLocation.getY() + ", " + inLocation.getZ());
       }
       
       CreatureboxPlugin.setSpawnControl(true);
       
       if(theSpawn == null) {
-    	System.out.println("[creaturebox] Unable to spawn '" + _creatureType.getName() + "' at co-ords: "+ inLocation.getX() + ", " + inLocation.getY() + ", " + inLocation.getZ());
+    	System.out.println("[creaturebox] Unable to spawn '" + _EntityType.getName() + "' at co-ords: "+ inLocation.getX() + ", " + inLocation.getY() + ", " + inLocation.getZ());
       }
       
       // DebuggerPlugin.notify(DebuggerPlugin.priorityNoise, "spawned: " + theSpawn);
@@ -69,7 +64,7 @@ class CB_BukkitSpawnable extends CB_Spawnable
     return null;
   }
   
-  private static HashMap<CreatureType, HashMap <String, CB_Requirement>> _requirementsByCreatureType = new HashMap<CreatureType, HashMap <String, CB_Requirement>>();
+  private static HashMap<EntityType, HashMap <String, CB_Requirement>> _requirementsByEntityType = new HashMap<EntityType, HashMap <String, CB_Requirement>>();
 
   static
   {
@@ -86,14 +81,16 @@ class CB_BukkitSpawnable extends CB_Spawnable
     
     // Critters
 
-    _requirementsByCreatureType.put(CreatureType.PIG, theCritterRequirementsByKey);
-    _requirementsByCreatureType.put(CreatureType.CHICKEN, theCritterRequirementsByKey);
-    _requirementsByCreatureType.put(CreatureType.COW, theCritterRequirementsByKey);
-    _requirementsByCreatureType.put(CreatureType.SHEEP, theCritterRequirementsByKey);
-    _requirementsByCreatureType.put(CreatureType.MUSHROOM_COW, theCritterRequirementsByKey);
-    _requirementsByCreatureType.put(CreatureType.VILLAGER, theCritterRequirementsByKey);
-    _requirementsByCreatureType.put(CreatureType.SNOWMAN, theCritterRequirementsByKey);
-    
+    _requirementsByEntityType.put(EntityType.PIG, theCritterRequirementsByKey);
+    _requirementsByEntityType.put(EntityType.CHICKEN, theCritterRequirementsByKey);
+    _requirementsByEntityType.put(EntityType.COW, theCritterRequirementsByKey);
+    _requirementsByEntityType.put(EntityType.SHEEP, theCritterRequirementsByKey);
+    _requirementsByEntityType.put(EntityType.MUSHROOM_COW, theCritterRequirementsByKey);
+    _requirementsByEntityType.put(EntityType.VILLAGER, theCritterRequirementsByKey);
+    _requirementsByEntityType.put(EntityType.IRON_GOLEM, theCritterRequirementsByKey);
+    _requirementsByEntityType.put(EntityType.SNOWMAN, theCritterRequirementsByKey);
+    _requirementsByEntityType.put(EntityType.WOLF, theCritterRequirementsByKey);
+    _requirementsByEntityType.put(EntityType.OCELOT, theCritterRequirementsByKey);
     
     // Squid
     
@@ -102,7 +99,7 @@ class CB_BukkitSpawnable extends CB_Spawnable
     theSquidRequirementsByKey.put("space", new CB_SquidRequirements());
     theSquidRequirementsByKey.put("player", thePlayerRequirement);
     
-    _requirementsByCreatureType.put(CreatureType.SQUID, theSquidRequirementsByKey);
+    _requirementsByEntityType.put(EntityType.SQUID, theSquidRequirementsByKey);
 
     // PigZombies
 
@@ -111,7 +108,7 @@ class CB_BukkitSpawnable extends CB_Spawnable
     thePigZombieRequirementsByKey.put("space", new CB_PigZombieRequirements());
     thePigZombieRequirementsByKey.put("player", thePlayerRequirement);
     
-    _requirementsByCreatureType.put(CreatureType.PIG_ZOMBIE, thePigZombieRequirementsByKey);
+    _requirementsByEntityType.put(EntityType.PIG_ZOMBIE, thePigZombieRequirementsByKey);
     
     HashMap <String, CB_Requirement> theMonsterRequirementsByKey = new HashMap <String, CB_Requirement>();
 
@@ -119,20 +116,19 @@ class CB_BukkitSpawnable extends CB_Spawnable
     theMonsterRequirementsByKey.put("light", theDarkRequirement);
     theMonsterRequirementsByKey.put("player", thePlayerRequirement);
     
-    _requirementsByCreatureType.put(CreatureType.CREEPER, theMonsterRequirementsByKey);
-    _requirementsByCreatureType.put(CreatureType.GHAST, theMonsterRequirementsByKey);
-    _requirementsByCreatureType.put(CreatureType.SKELETON, theMonsterRequirementsByKey);
-    _requirementsByCreatureType.put(CreatureType.SPIDER, theMonsterRequirementsByKey);
-    _requirementsByCreatureType.put(CreatureType.ZOMBIE, theMonsterRequirementsByKey);
-    _requirementsByCreatureType.put(CreatureType.SLIME, theMonsterRequirementsByKey);
-    _requirementsByCreatureType.put(CreatureType.GIANT, theMonsterRequirementsByKey);
-    _requirementsByCreatureType.put(CreatureType.WOLF, theCritterRequirementsByKey);
-    _requirementsByCreatureType.put(CreatureType.CAVE_SPIDER, theMonsterRequirementsByKey);
-    _requirementsByCreatureType.put(CreatureType.ENDERMAN, theMonsterRequirementsByKey);
-    _requirementsByCreatureType.put(CreatureType.SILVERFISH, theMonsterRequirementsByKey);
-    _requirementsByCreatureType.put(CreatureType.BLAZE, theMonsterRequirementsByKey);
-    _requirementsByCreatureType.put(CreatureType.ENDER_DRAGON, theMonsterRequirementsByKey);
-    _requirementsByCreatureType.put(CreatureType.MAGMA_CUBE, theMonsterRequirementsByKey);
+    _requirementsByEntityType.put(EntityType.CREEPER, theMonsterRequirementsByKey);
+    _requirementsByEntityType.put(EntityType.GHAST, theMonsterRequirementsByKey);
+    _requirementsByEntityType.put(EntityType.SKELETON, theMonsterRequirementsByKey);
+    _requirementsByEntityType.put(EntityType.SPIDER, theMonsterRequirementsByKey);
+    _requirementsByEntityType.put(EntityType.ZOMBIE, theMonsterRequirementsByKey);
+    _requirementsByEntityType.put(EntityType.SLIME, theMonsterRequirementsByKey);
+    _requirementsByEntityType.put(EntityType.GIANT, theMonsterRequirementsByKey);
+    _requirementsByEntityType.put(EntityType.CAVE_SPIDER, theMonsterRequirementsByKey);
+    _requirementsByEntityType.put(EntityType.ENDERMAN, theMonsterRequirementsByKey);
+    _requirementsByEntityType.put(EntityType.SILVERFISH, theMonsterRequirementsByKey);
+    _requirementsByEntityType.put(EntityType.BLAZE, theMonsterRequirementsByKey);
+    _requirementsByEntityType.put(EntityType.ENDER_DRAGON, theMonsterRequirementsByKey);
+    _requirementsByEntityType.put(EntityType.MAGMA_CUBE, theMonsterRequirementsByKey);
        
     
   }

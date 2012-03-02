@@ -11,7 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.CreatureType;
+import org.bukkit.entity.EntityType;
 
 class CB_Spawner
 {
@@ -50,7 +50,7 @@ class CB_Spawner
     assert (theBlock.getType() == Material.MOB_SPAWNER);
     
     CreatureSpawner theSpawner = (CreatureSpawner) theBlock.getState();
-    CB_Spawnable theSpawnable = CB_Spawnable.getSpawnableOf(theSpawner.getCreatureType());
+    CB_Spawnable theSpawnable = CB_Spawnable.getSpawnableOf(theSpawner.getSpawnedType());
     
     this._spawns = new ArrayList<CB_Spawnable>();
     this._spawns.add(theSpawnable);
@@ -79,9 +79,9 @@ class CB_Spawner
     return this._location;
   }
   
-  public CreatureType getCreatureType()
+  public EntityType getEntityType()
   {
-    return (this._spawns.size() > 0) ? this._spawns.get(0).getCreatureType() : null;
+    return (this._spawns.size() > 0) ? this._spawns.get(0).getEntityType() : null;
   }
   
   public ArrayList<CB_Spawnable> getSpawns()
@@ -195,9 +195,6 @@ class CB_Spawner
       this._count = (Integer)inSettings.get("Count");
       this._limit = (Integer)inSettings.get("Limit");
       this._requirements = (ArrayList<String>)inSettings.get("Requirements");
-      
-      if (inSettings.get("Creatures") != null)
-        this._creatures = (ArrayList<Integer>)inSettings.get("Creatures");
     }
     catch (NullPointerException inException)
     {
@@ -343,7 +340,7 @@ class CB_Spawner
     {
       int theSpawnableIndex = CreatureboxPlugin.getRandom().nextInt(this._spawns.size());
       CB_Spawnable theSpawnable = this._spawns.get(theSpawnableIndex);
-
+      
       theResult = theSpawnable.spawnCreatureNear(this._location, _requirements);
 
     }

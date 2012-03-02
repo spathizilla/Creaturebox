@@ -14,7 +14,7 @@ import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.event.Listener;
-import org.bukkit.entity.CreatureType;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 /**
@@ -104,7 +104,7 @@ public class CB_BlockListener implements Listener
 		theSpawner.showSettings(thePlayer);
 
 		if(CreatureboxPlugin.showPlacements) {
-			CreatureboxPlugin.logline(thePlayer.getName() + " placed a " + theSpawner.getCreatureType().getName() + " spawner in " + theSpawnerLoc.getWorld().getName() + " at: x: "+ theSpawnerLoc.getBlockX() +" y:"+ theSpawnerLoc.getBlockY()+ " z:" + theSpawnerLoc.getBlockZ());
+			CreatureboxPlugin.logline(thePlayer.getName() + " placed a " + theSpawner.getEntityType().getName() + " spawner in " + theSpawnerLoc.getWorld().getName() + " at: x: "+ theSpawnerLoc.getBlockX() +" y:"+ theSpawnerLoc.getBlockY()+ " z:" + theSpawnerLoc.getBlockZ());
 		}
 	}
 
@@ -145,7 +145,7 @@ public class CB_BlockListener implements Listener
 		ItemStack inHand = player.getItemInHand();
 		Location loc = target.getLocation();
 
-		CreatureType cType = CB_Utils.getMobFromDurability(inHand.getDurability());
+		EntityType cType = CB_Utils.getMobFromDurability(inHand.getDurability());
 		CB_Spawnable theSpawnable = CB_Spawnable.getSpawnableOf(cType);
 
 		if (theSpawnable == null) {
@@ -163,7 +163,7 @@ public class CB_BlockListener implements Listener
 
 		target.setType(Material.MOB_SPAWNER);
 		CreatureSpawner spawner = (CreatureSpawner) target.getState();
-		spawner.setCreatureType(cType);
+		spawner.setSpawnedType(cType);
 
 		CB_Spawner theSpawner = _plugin.getSpawner(new CB_Location(loc));
 		theSpawner.setSpawns(theSpawnable);
@@ -193,7 +193,7 @@ public class CB_BlockListener implements Listener
 		Location loc = spawner.getLocation();
 
 		CreatureSpawner theSpawner = (CreatureSpawner) spawner.getState();
-		CB_Spawnable theSpawnable = CB_Spawnable.getSpawnableOf(theSpawner.getCreatureType());
+		CB_Spawnable theSpawnable = CB_Spawnable.getSpawnableOf(theSpawner.getSpawnedType());
 
 		String thePermission = "creaturebox.creature." + theSpawnable.getCreatureName();
 		if(_plugin.permission(player, thePermission, true) == false) {
@@ -211,7 +211,7 @@ public class CB_BlockListener implements Listener
 		world.dropItemNaturally(loc, spawnegg);
 
 		if(CreatureboxPlugin.showPlacements) {
-			CreatureboxPlugin.logline(player.getName() + " destroyed a " + theSpawner.getCreatureType().getName() + " spawner in " + loc.getWorld().getName() + " at: x: "+ loc.getBlockX() +" y:"+ loc.getBlockY()+ " z:" + loc.getBlockZ());
+			CreatureboxPlugin.logline(player.getName() + " destroyed a " + theSpawner.getSpawnedType().getName() + " spawner in " + loc.getWorld().getName() + " at: x: "+ loc.getBlockX() +" y:"+ loc.getBlockY()+ " z:" + loc.getBlockZ());
 		}
 	}
 
