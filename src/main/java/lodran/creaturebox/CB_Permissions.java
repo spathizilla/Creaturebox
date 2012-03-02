@@ -168,7 +168,15 @@ class CB_Permissions
       "creaturebox.creature.wolf",
       "creaturebox.creature.cave_spider",
       "creaturebox.creature.enderman",
-      "creaturebox.creature.silverfish"
+      "creaturebox.creature.silverfish",
+      "creaturebox.creature.villager",
+      "creaturebox.creature.ender_dragon",
+      "creaturebox.creature.blaze",
+      "creaturebox.creature.magma_cube",
+      "creaturebox.creature.snowman",
+      "creaturebox.creature.mushroom_cow",
+      "creaturebox.creature.ocelot",
+      "creaturebox.creature.iron_golem",
     };
     
     String[] theConsolePermissions = {
